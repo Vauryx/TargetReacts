@@ -1,7 +1,7 @@
 {
-  "name": "module",
-  "title": "New Module",
-  "description": "",
+  "name": "TargetReacts",
+  "title": "Target Reacts",
+  "description": "They got hit! They should react!",
   "version": "This is auto replaced",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
@@ -9,13 +9,18 @@
   "compatibleCoreVersion": "0.8.8",
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "Vauryx",
+      "url": "https://github.com/Vauryx",
+      "discord": "Vauryx#4507"
     }
   ],
   "dependencies": [
-
+    {
+      "name": "midi-qol"
+    },
+    {
+        "name": "tokenmagic"
+    }
   ],
   "conflicts": [
     
