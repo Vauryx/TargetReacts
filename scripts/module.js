@@ -1,8 +1,59 @@
+import TRActorSettings from "./lib/targetReactPage.js";
+
 Hooks.once('init', async function() {
     console.log("Registering TargetReacts game settings...");
+    game.settings.register("TargetReacts", "audioDB", {
+        name: "Audio JSON File",
+        scope: 'world',
+        type: String,
+        default: "",
+        filePicker: true,
+        config: true,
+        onChange: value => 
+        { // A callback function which triggers when the setting is changed
+            console.log(value);
+            window.location.reload();
+            if (value != "")
+            {
+                async function getJSON(path){
+                    const response = await fetch(path);
+                    const json = await response.json();
+                    return json;
+                }
+                let NPCAudioDB = getJSON(value);
+                SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
+            }
+        }
+    });
+    game.settings.register("TargetReacts", "targetHurtAudioVolume", {  
+        name: "Target Reaction Audio On Hurt Volume",                  
+        hint: "Set how loudly the target reaction sound when hurt will play",               
+        scope: "world",                                     
+        config: true,                                      
+        type: Number,
+        range: {
+        min: 0,
+        max: 1,
+        step: 0.05,
+        },
+        default: 0.5                                  
+    });
+    game.settings.register("TargetReacts", "targetDeathAudioVolume", {  
+        name: "Target Reaction Audio On Death Volume",                  
+        hint: "Set how loudly the target reaction sound when dying will play",               
+        scope: "world",                                     
+        config: true,                                      
+        type: Number,
+        range: {
+        min: 0,
+        max: 1,
+        step: 0.05,
+        },
+        default: 0.5                                  
+    });
     game.settings.register("TargetReacts", "defaultShakeDelay", {  
-        name: "Default Shake Delay",                  
-        hint: "Set default delay for hurt shake",               
+        name: "Default Shake/Audio Delay",                  
+        hint: "Set default delay for target reaction shake and audio",               
         scope: "world",                                     
         config: true,                                      
         type: Number,
@@ -110,5 +161,29 @@ Hooks.once('init', async function() {
 });
 
 Hooks.once('ready', async function() {
-
+    async function getJSON(path){
+        const response = await fetch(path);
+        const json = await response.json();
+        return json;
+      }
+    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    if (NPCAudio != "")
+    {
+        let NPCAudioDB = await getJSON(NPCAudio);
+        Hooks.on("sequencer.ready", () => {
+            SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
+        });
+    }
 });
+
+/*Hooks.on(`renderActorSheet5eNPC`, async (app, html, data) => {
+  
+    console.log("Caught actor sheet render hook!");
+    const trBtn = $(`<a class="tr-actor-settings" title="T-R"><i class="fas fa-biohazard"></i>Target Reacts</a>`);
+    trBtn.click(ev => {
+      new TRActorSettings(app.entity, {}).render(true);
+    });
+      html.closest('.app').find('.tr-actor-settings').remove();
+      let titleElement = html.closest('.app').find('.window-title');
+      trBtn.insertAfter(titleElement);
+  });*/

@@ -1,0 +1,41 @@
+<form class="flexcol" autocomplete="off" novalidate>
+    <nav class="tabs" data-group="primary-tabs">
+        <a class="audioSetting" data-tab="audio-override"><i class="fas fa-guitar"></i> AUDIO </a>
+    </nav>
+    <section class="content">
+        <!--Audio Settings-->
+        <div class="tab" data-tab="audio-override" data-group="primary-tabs">
+            <div class="tr-audio-checkbox">
+                <div class="form-group">
+                    <label>Disable audio</label>
+                    <input type="checkbox" name="flags.targetreacts.allSounds.actor.disableAudio" {{checked
+                        flags.targetreacts.allSounds.actor.disableAudio}}>
+                </div>
+                <div class="form-group">
+                    <label>Choose override file</label>
+                    <input type="text" class="files" name="flags.targetreacts.allSounds.actor.file"
+                        value={{actorAudio}}>
+                    <button type="button" class="file-picker" data-type="audio"
+                        data-target="flags.targetreacts.allSounds.actor.file" tabindex="-1" title="Browse Files">
+                        <i class="fas fa-music fa-sm"></i>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Reaction Delay</label>
+                    <input type="Number" name="flags.targetreacts.allSounds.actor.delay" min="0"
+                        value={{delayAudio}}>
+                </div>
+                <div class="form-group">
+                    <label>Reaction Volume</label>
+                    <input type="Number" name="flags.targetreacts.allSounds.actor.volume" min="0" max="10" step="0.01"
+                        value={{volumeAudio}}>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-save"></i> Save and Close
+        </button>
+    </footer>
+</form>
