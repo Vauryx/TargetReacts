@@ -1,6 +1,6 @@
 
 
-function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration)
+function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration, targetName, targetReactionAudioVolume)
 {
   console.log("Hurt Shaking");
   let bloodEffect = 
@@ -45,11 +45,21 @@ function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDura
     hurtEffect.push(bloodEffect);
   }
   setTimeout(function(){
+    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    if (NPCAudio != "")
+    {
+      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt` ?? "";
+      let targetReactsSequence = new Sequence()
+      .sound()
+          .file(NPCAudioFile)
+          .volume(targetReactionAudioVolume)
+      targetReactsSequence.play();
+    }
     TokenMagic.addFiltersOnTargeted(hurtEffect);
   },shakeDelay);
 }
 
-function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, bloodEffectDelay)
+function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, bloodEffectDelay,targetName, targetReactionAudioVolume)
 {
   console.log("Death Shaking");
   let deathEffect =
@@ -87,6 +97,16 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
       textureAlphaBlend: false
   }];
   setTimeout(function(){
+    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    if (NPCAudio != "")
+    {
+      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.dead` ?? "";
+      let targetReactsSequence = new Sequence()
+      .sound()
+          .file(NPCAudioFile)
+          .volume(targetReactionAudioVolume)
+      targetReactsSequence.play();
+    }
     TokenMagic.addFiltersOnTargeted(deathEffect);
     if(bloodOnDeath)
     {
@@ -100,6 +120,8 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
 Hooks.on("midi-qol.RollComplete", function(data){
   if(data.hitTargets.size > 0)
   {
+    let targetHurtAudioVolume = game.settings.get("TargetReacts","targetHurtAudioVolume");
+    let targetDeathAudioVolume = game.settings.get("TargetReacts","targetDeathAudioVolume");
     let defaultDelay = game.settings.get("TargetReacts","defaultShakeDelay");
     let bloodOnHurt = game.settings.get("TargetReacts","bloodOnHurt");
     let bloodOnDeath = game.settings.get("TargetReacts","bloodOnDeath");
@@ -110,7 +132,8 @@ Hooks.on("midi-qol.RollComplete", function(data){
     let deathShakeLoopTime = game.settings.get("TargetReacts","deathShakeLoopTime");
     let bloodEffectDelay = game.settings.get("TargetReacts","deathBloodDelay");
     let woundSizeScalar =  game.settings.get("TargetReacts","woundSizeScalar");
-    
+
+    let targetName = [...data.hitTargets][0].data.name;
     let hpDamage = data.damageList[0].hpDamage;
     let newHP = data.damageList[0].newHP;
     let targetMaxHP = [...data.hitTargets][0].document._actor.data.data.attributes.hp.max;
@@ -123,11 +146,11 @@ Hooks.on("midi-qol.RollComplete", function(data){
     }
     if (hpDamage > 0 && newHP > 0)
     {
-      HurtShake(shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime);
+      HurtShake(shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime,targetName, targetHurtAudioVolume);
     }
     else if (hpDamage > 0 && newHP <= 0)
     {
-      DeathShake(shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay);
+      DeathShake(shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay, targetName, targetDeathAudioVolume);
     }
   }
 });
