@@ -1,3 +1,5 @@
+import TRActorSettings from "./lib/targetReactPage.js";
+
 Hooks.once('init', async function() {
     console.log("Registering TargetReacts game settings...");
     game.settings.register("TargetReacts", "defaultShakeDelay", {  
@@ -112,3 +114,15 @@ Hooks.once('init', async function() {
 Hooks.once('ready', async function() {
 
 });
+//renderActorSheet5eNPC 
+Hooks.on(`renderActorSheet5eNPC`, async (app, html, data) => {
+  
+    console.log("Caught actor sheet render hook!");
+    const trBtn = $(`<a class="tr-actor-settings" title="T-R"><i class="fas fa-biohazard"></i>Target Reacts</a>`);
+    trBtn.click(ev => {
+      new TRActorSettings(app.entity, {}).render(true);
+    });
+      html.closest('.app').find('.tr-actor-settings').remove();
+      let titleElement = html.closest('.app').find('.window-title');
+      trBtn.insertAfter(titleElement);
+  });

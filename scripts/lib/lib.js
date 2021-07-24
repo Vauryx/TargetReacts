@@ -1,3 +1,5 @@
+
+
 function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration)
 {
   console.log("Hurt Shaking");
@@ -137,3 +139,4 @@ Hooks.on("renderItemSheet", (app, html, data) => {
   const shakeDelayField = `<div class="form-group"><label>${labelText}</label><input type="text" name="flags.TargetReacts.shakeDelay" value="${shakeDelay}"/> </div>`;
   element.append(shakeDelayField); 
 });
+
