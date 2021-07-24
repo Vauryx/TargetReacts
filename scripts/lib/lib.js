@@ -107,14 +107,14 @@ Hooks.on("midi-qol.RollComplete", function(data){
     let deathShakeLoops = game.settings.get("TargetReacts","deathShakeLoops");
     let deathShakeLoopTime = game.settings.get("TargetReacts","deathShakeLoopTime");
     let bloodEffectDelay = game.settings.get("TargetReacts","deathBloodDelay");
-
+    let woundSizeScalar =  game.settings.get("TargetReacts","woundSizeScalar");
+    
     let hpDamage = data.damageList[0].hpDamage;
     let newHP = data.damageList[0].newHP;
     let targetMaxHP = [...data.hitTargets][0].document._actor.data.data.attributes.hp.max;
     let damageTotal = data.damageTotal;
     let HpLost = (damageTotal/targetMaxHP) * 100;
-    let woundSize = Math.abs((0.02*HpLost) + 0.4);
-
+    let woundSize = Math.abs((0.02*HpLost) + woundSizeScalar);
     if (shakeDelay == "")
     {
       shakeDelay = defaultDelay;

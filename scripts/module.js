@@ -11,7 +11,7 @@ Hooks.once('init', async function() {
         max: 5000,
         step: 25,
         },
-        default: 1750,                                    
+        default: 1750                                  
     });
     game.settings.register("TargetReacts", "bloodOnHurt", {  
         name: "Blood when hurt?",                  
@@ -19,7 +19,20 @@ Hooks.once('init', async function() {
         scope: "world",                                     
         config: true,                                      
         type: Boolean,
-        default: true,                                    
+        default: true                                    
+    });
+    game.settings.register("TargetReacts", "woundSizeScalar", {  
+        name: "Minimum wound size",                  
+        hint: "Set the blood splatter, when hurt, effect minimum size. Splatter will scale up based on percentage of health lost",               
+        scope: "world",                                     
+        config: true,                                      
+        type: Number,
+        range: {
+        min: 0.1,
+        max: 1,
+        step: 0.05,
+        },
+        default: 0.1                                   
     });
     game.settings.register("TargetReacts", "bloodOnDeath", {  
         name: "Blood when death?",                  
@@ -27,7 +40,7 @@ Hooks.once('init', async function() {
         scope: "world",                                     
         config: true,                                      
         type: Boolean,
-        default: true,                                    
+        default: true                                    
     });
     game.settings.register("TargetReacts", "hurtShakeLoops", {  
         name: "Hurt Shake Loops",                  
@@ -40,7 +53,7 @@ Hooks.once('init', async function() {
         max: 5,
         step: 1,
         },
-        default: 2,                                    
+        default: 2                                    
     });
     game.settings.register("TargetReacts", "hurtShakeLoopTime", {  
         name: "Hurt Shake Loop Time",                  
@@ -53,7 +66,7 @@ Hooks.once('init', async function() {
         max: 1000,
         step: 25,
         },
-        default: 150,                                    
+        default: 150                                    
     });
     game.settings.register("TargetReacts", "deathShakeLoops", {  
         name: "Death Shake Loops",                  
@@ -66,7 +79,7 @@ Hooks.once('init', async function() {
         max: 5,
         step: 1,
         },
-        default: 4,                                    
+        default: 4                                    
     });
     game.settings.register("TargetReacts", "deathShakeLoopTime", {  
         name: "Death Shake Loop Time",                  
@@ -79,7 +92,7 @@ Hooks.once('init', async function() {
         max: 1000,
         step: 25,
         },
-        default: 150,                                    
+        default: 150                                    
     });
     game.settings.register("TargetReacts", "deathBloodDelay", {  
         name: "Death Blood Effect Delay",                  
@@ -92,7 +105,7 @@ Hooks.once('init', async function() {
         max: 5000,
         step: 50,
         },
-        default: 400,                                    
+        default: 400                                   
     });
 });
 
