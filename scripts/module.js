@@ -114,7 +114,7 @@ Hooks.once('init', async function() {
 Hooks.once('ready', async function() {
 
 });
-//renderActorSheet5eNPC 
+
 Hooks.on(`renderActorSheet5eNPC`, async (app, html, data) => {
   
     console.log("Caught actor sheet render hook!");

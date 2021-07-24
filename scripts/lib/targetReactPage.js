@@ -1,7 +1,7 @@
 export class TRActorSettings extends FormApplication {
     constructor() {
         super(...arguments);
-        this.flags = this.object.data.flags.autoanimations
+        this.flags = this.object.data.flags.targetreacts
     }
 
     static get defaultOptions() {
@@ -13,19 +13,31 @@ export class TRActorSettings extends FormApplication {
             width: 600,
             height: "auto",
             closeOnSubmit: true,
-            tabs: [{ navSelector: ".tabs", contentSelector: ".content", initial: "audio-settings" }]
+            tabs: [{ navSelector: ".tabs", contentSelector: ".content", initial: "audio-override" }]
         });
     }
+    getData() {
+        let flags = this.object.data.flags;
+        console.log(flags);
+        let content = "";
+        return {
+            actorAudio: flags.targetreacts?.allSounds?.actor?.file || "",
+            delayAudio: flags.targetreacts?.allSounds?.actor?.delay || 0,
+            volumeAudio: flags.targetreacts?.allSounds?.actor?.volume || 0.25,
+            flags: this.object.data.flags,
+            content: content,
+        };
 
+    }
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.files').change(evt => {
             this.submit({ preventClose: true }).then(() => this.render());
         });
-        html.find('.aa-audio-checkbox input[type="checkbox"]').click(evt => {
+        html.find('.tr-audio-checkbox input[type="checkbox"]').click(evt => {
             this.submit({ preventClose: true }).then(() => this.render());
         });
-        html.find('.aa-audio-checkbox input[type="Number"]').change(evt => {
+        html.find('.tr-audio-checkbox input[type="Number"]').change(evt => {
             this.submit({ preventClose: true }).then(() => this.render());
         });
     }
