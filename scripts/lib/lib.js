@@ -45,7 +45,7 @@ function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDura
     hurtEffect.push(bloodEffect);
   }
   setTimeout(function(){
-    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    let NPCAudio = game.settings.get("targetreacts","audioDB");
     if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.hurt`))
     {
       let NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt`;
@@ -97,7 +97,7 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
       textureAlphaBlend: false
   }];
   setTimeout(function(){
-    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    let NPCAudio = game.settings.get("targetreacts","audioDB");
     if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.dead`))
     {
       let NPCAudioFile = `TargetReactsAudioDB.${targetName}.dead` ?? "";
@@ -120,18 +120,18 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
 Hooks.on("midi-qol.RollComplete", function(data){
   if(data.hitTargets.size > 0)
   {
-    let targetHurtAudioVolume = game.settings.get("TargetReacts","targetHurtAudioVolume");
-    let targetDeathAudioVolume = game.settings.get("TargetReacts","targetDeathAudioVolume");
-    let defaultDelay = game.settings.get("TargetReacts","defaultShakeDelay");
-    let bloodOnHurt = game.settings.get("TargetReacts","bloodOnHurt");
-    let bloodOnDeath = game.settings.get("TargetReacts","bloodOnDeath");
-    let shakeDelay = getProperty(data.item, "data.flags.TargetReacts.shakeDelay");
-    let hurtShakeLoops = game.settings.get("TargetReacts","hurtShakeLoops");
-    let hurtShakeLoopTime = game.settings.get("TargetReacts","hurtShakeLoopTime");
-    let deathShakeLoops = game.settings.get("TargetReacts","deathShakeLoops");
-    let deathShakeLoopTime = game.settings.get("TargetReacts","deathShakeLoopTime");
-    let bloodEffectDelay = game.settings.get("TargetReacts","deathBloodDelay");
-    let woundSizeScalar =  game.settings.get("TargetReacts","woundSizeScalar");
+    let targetHurtAudioVolume = game.settings.get("targetreacts","targetHurtAudioVolume");
+    let targetDeathAudioVolume = game.settings.get("targetreacts","targetDeathAudioVolume");
+    let defaultDelay = game.settings.get("targetreacts","defaultShakeDelay");
+    let bloodOnHurt = game.settings.get("targetreacts","bloodOnHurt");
+    let bloodOnDeath = game.settings.get("targetreacts","bloodOnDeath");
+    let shakeDelay = getProperty(data.item, "data.flags.targetreacts.shakeDelay") ?? "";
+    let hurtShakeLoops = game.settings.get("targetreacts","hurtShakeLoops");
+    let hurtShakeLoopTime = game.settings.get("targetreacts","hurtShakeLoopTime");
+    let deathShakeLoops = game.settings.get("targetreacts","deathShakeLoops");
+    let deathShakeLoopTime = game.settings.get("targetreacts","deathShakeLoopTime");
+    let bloodEffectDelay = game.settings.get("targetreacts","deathBloodDelay");
+    let woundSizeScalar =  game.settings.get("targetreacts","woundSizeScalar");
 
     let targetName = [...data.hitTargets][0].data.name;
     let hpDamage = data.damageList[0].hpDamage;
@@ -158,8 +158,8 @@ Hooks.on("midi-qol.RollComplete", function(data){
 Hooks.on("renderItemSheet", (app, html, data) => {
   const element = html.find('input[name="data.chatFlavor"]').parent().parent();
   const labelText = "Target Shake Delay";
-  const shakeDelay = getProperty(app.object.data, "flags.TargetReacts.shakeDelay") ?? "";
-  const shakeDelayField = `<div class="form-group"><label>${labelText}</label><input type="text" name="flags.TargetReacts.shakeDelay" value="${shakeDelay}"/> </div>`;
+  const shakeDelay = getProperty(app.object.data, "flags.targetreacts.shakeDelay") ?? "";
+  const shakeDelayField = `<div class="form-group"><label>${labelText}</label><input type="text" name="flags.targetreacts.shakeDelay" value="${shakeDelay}"/> </div>`;
   element.append(shakeDelayField); 
 });
 

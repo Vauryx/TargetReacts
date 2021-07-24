@@ -2,7 +2,7 @@ import TRActorSettings from "./lib/targetReactPage.js";
 
 Hooks.once('init', async function() {
     console.log("Registering TargetReacts game settings...");
-    game.settings.register("TargetReacts", "audioDB", {
+    game.settings.register("targetreacts", "audioDB", {
         name: "Audio JSON File",
         scope: 'world',
         type: String,
@@ -25,7 +25,7 @@ Hooks.once('init', async function() {
             }
         }
     });
-    game.settings.register("TargetReacts", "targetHurtAudioVolume", {  
+    game.settings.register("targetreacts", "targetHurtAudioVolume", {  
         name: "Target Reaction Audio On Hurt Volume",                  
         hint: "Set how loudly the target reaction sound when hurt will play",               
         scope: "world",                                     
@@ -38,7 +38,7 @@ Hooks.once('init', async function() {
         },
         default: 0.5                                  
     });
-    game.settings.register("TargetReacts", "targetDeathAudioVolume", {  
+    game.settings.register("targetreacts", "targetDeathAudioVolume", {  
         name: "Target Reaction Audio On Death Volume",                  
         hint: "Set how loudly the target reaction sound when dying will play",               
         scope: "world",                                     
@@ -51,7 +51,7 @@ Hooks.once('init', async function() {
         },
         default: 0.5                                  
     });
-    game.settings.register("TargetReacts", "defaultShakeDelay", {  
+    game.settings.register("targetreacts", "defaultShakeDelay", {  
         name: "Default Shake/Audio Delay",                  
         hint: "Set default delay for target reaction shake and audio",               
         scope: "world",                                     
@@ -64,7 +64,7 @@ Hooks.once('init', async function() {
         },
         default: 1750                                  
     });
-    game.settings.register("TargetReacts", "bloodOnHurt", {  
+    game.settings.register("targetreacts", "bloodOnHurt", {  
         name: "Blood when hurt?",                  
         hint: "Apply the hurt blood splatter when target loses hp on hit?",               
         scope: "world",                                     
@@ -72,7 +72,7 @@ Hooks.once('init', async function() {
         type: Boolean,
         default: true                                    
     });
-    game.settings.register("TargetReacts", "woundSizeScalar", {  
+    game.settings.register("targetreacts", "woundSizeScalar", {  
         name: "Minimum wound size",                  
         hint: "Set the blood splatter, when hurt, effect minimum size. Splatter will scale up based on percentage of health lost",               
         scope: "world",                                     
@@ -85,7 +85,7 @@ Hooks.once('init', async function() {
         },
         default: 0.1                                   
     });
-    game.settings.register("TargetReacts", "bloodOnDeath", {  
+    game.settings.register("targetreacts", "bloodOnDeath", {  
         name: "Blood when death?",                  
         hint: "Apply the death blood splatter when target dies on hit?",               
         scope: "world",                                     
@@ -93,7 +93,7 @@ Hooks.once('init', async function() {
         type: Boolean,
         default: true                                    
     });
-    game.settings.register("TargetReacts", "hurtShakeLoops", {  
+    game.settings.register("targetreacts", "hurtShakeLoops", {  
         name: "Hurt Shake Loops",                  
         hint: "Set how many times to shake when hurt",               
         scope: "world",                                     
@@ -106,7 +106,7 @@ Hooks.once('init', async function() {
         },
         default: 2                                    
     });
-    game.settings.register("TargetReacts", "hurtShakeLoopTime", {  
+    game.settings.register("targetreacts", "hurtShakeLoopTime", {  
         name: "Hurt Shake Loop Time",                  
         hint: "Set how long the shakes when hurt should take",               
         scope: "world",                                     
@@ -119,7 +119,7 @@ Hooks.once('init', async function() {
         },
         default: 150                                    
     });
-    game.settings.register("TargetReacts", "deathShakeLoops", {  
+    game.settings.register("targetreacts", "deathShakeLoops", {  
         name: "Death Shake Loops",                  
         hint: "Set how many times to shake on death",               
         scope: "world",                                     
@@ -132,7 +132,7 @@ Hooks.once('init', async function() {
         },
         default: 4                                    
     });
-    game.settings.register("TargetReacts", "deathShakeLoopTime", {  
+    game.settings.register("targetreacts", "deathShakeLoopTime", {  
         name: "Death Shake Loop Time",                  
         hint: "Set how long the shakes on death should take",               
         scope: "world",                                     
@@ -145,7 +145,7 @@ Hooks.once('init', async function() {
         },
         default: 150                                    
     });
-    game.settings.register("TargetReacts", "deathBloodDelay", {  
+    game.settings.register("targetreacts", "deathBloodDelay", {  
         name: "Death Blood Effect Delay",                  
         hint: "Set how long to delay the blood splat on death",               
         scope: "world",                                     
@@ -160,19 +160,17 @@ Hooks.once('init', async function() {
     });
 });
 
-Hooks.once('ready', async function() {
+Hooks.on("sequencer.ready", async () => {
     async function getJSON(path){
         const response = await fetch(path);
         const json = await response.json();
         return json;
       }
-    let NPCAudio = game.settings.get("TargetReacts","audioDB");
+    let NPCAudio = game.settings.get("targetreacts","audioDB");
     if (NPCAudio != "")
     {
         let NPCAudioDB = await getJSON(NPCAudio);
-        Hooks.on("sequencer.ready", () => {
-            SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
-        });
+        SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
     }
 });
 
