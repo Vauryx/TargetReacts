@@ -46,9 +46,9 @@ function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDura
   }
   setTimeout(function(){
     let NPCAudio = game.settings.get("TargetReacts","audioDB");
-    if (NPCAudio != "")
+    if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.hurt`))
     {
-      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt` ?? "";
+      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt`;
       let targetReactsSequence = new Sequence()
       .sound()
           .file(NPCAudioFile)
@@ -98,7 +98,7 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
   }];
   setTimeout(function(){
     let NPCAudio = game.settings.get("TargetReacts","audioDB");
-    if (NPCAudio != "")
+    if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.dead`))
     {
       let NPCAudioFile = `TargetReactsAudioDB.${targetName}.dead` ?? "";
       let targetReactsSequence = new Sequence()
