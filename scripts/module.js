@@ -109,6 +109,15 @@ Hooks.once('init', async function() {
         },
         default: 400                                   
     });
+    game.settings.register("TargetReacts", "audioDB", {
+        name: "Audio JSON File",
+        scope: 'world',
+        type: String,
+        default: "",
+        filePicker: true,
+        config: true,
+        onchange: () => { window.location.reload() }
+    });
 });
 
 Hooks.once('ready', async function() {
