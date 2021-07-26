@@ -134,30 +134,44 @@ Hooks.on("midi-qol.RollComplete", function(data){
     let woundSizeScalar =  game.settings.get("targetreacts","woundSizeScalar");
 
     let target = [...data.hitTargets][0];
-    let targetName = [...data.hitTargets][0].data.name;
+    let targetToken = canvas.tokens.get(target?._id);
+    let targetName = target.data.name;
     let hpDamage = 0;
     let newHP = 0;
+    let targetMaxHP = 1;
+    let damageTotal = data.damageTotal;
+    let HpLost = 0;
+    let woundSize = 0.5;
+
     if (data.damageList)
     {
       hpDamage = data.damageList[0].hpDamage;
       newHP = data.damageList[0].newHP;
     }
+
+    if (target.document != undefined)
+    {
+      targetMaxHP = target.document._actor.data.data.attributes.hp.max;
+    }
+    else
+    {
+      targetMaxHP = target._actor.data.data.attributes.hp.max;
+    } 
     
-    let targetMaxHP = [...data.hitTargets][0].document._actor.data.data.attributes.hp.max;
-    let damageTotal = data.damageTotal;
-    let HpLost = (damageTotal/targetMaxHP) * 100;
-    let woundSize = Math.abs((0.02*HpLost) + woundSizeScalar);
+    HpLost = (damageTotal/targetMaxHP) * 100;
+    woundSize = Math.abs((0.02*HpLost) + woundSizeScalar);
+
     if (shakeDelay == "")
     {
       shakeDelay = defaultDelay;
     }
     if (hpDamage > 0 && newHP > 0)
     {
-      HurtShake(target, shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime,targetName, targetHurtAudioVolume);
+      HurtShake(targetToken, shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime,targetName, targetHurtAudioVolume);
     }
     else if (hpDamage > 0 && newHP <= 0)
     {
-      DeathShake(target, shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay, targetName, targetDeathAudioVolume);
+      DeathShake(targetToken, shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay, targetName, targetDeathAudioVolume);
     }
   }
 });
