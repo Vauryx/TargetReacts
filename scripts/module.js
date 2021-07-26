@@ -160,6 +160,33 @@ Hooks.once('init', async function() {
     });
 });
 
+Hooks.on("getSceneControlButtons", (controls, b, c) => {
+    controls
+      .find((c) => c.name == "token")
+      .tools.push(
+        {
+          name: "clearTargetReactsBloodSplatter",
+          title: "Heal Token",
+          icon: "fas fa-band-aid",
+          button: true,
+          visible: true,
+          onClick: () => {
+            let selectedToken = canvas.tokens.controlled[0];
+            if(TokenMagic.hasFilterId(selectedToken,"targetReactsWound"))
+            {
+                TokenMagic.deleteFiltersOnSelected("targetReactsWound");
+                
+            }
+            if (TokenMagic.hasFilterId(selectedToken,"targetReactsDeath"))
+            {
+                TokenMagic.deleteFiltersOnSelected("targetReactsDeath");
+            }
+          },
+        }
+      );
+  });
+
+
 Hooks.on("sequencer.ready", async () => {
     async function getJSON(path){
         const response = await fetch(path);

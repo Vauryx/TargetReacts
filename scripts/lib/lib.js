@@ -6,7 +6,7 @@ function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDura
   let bloodEffect = 
   {
     filterType: "splash",
-    filterId: "wound",
+    filterId: "targetReactsWound",
     rank:5,
     color: 0x990505,
     padding: 80,
@@ -83,7 +83,7 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
   let bloodEffect =
   [{
       filterType: "splash",
-      filterId: "death",
+      filterId: "targetReactsDeath",
       color: 0x900505,
       padding: 30,
       time: Math.random()*1000,
