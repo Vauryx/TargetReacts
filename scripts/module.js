@@ -166,7 +166,7 @@ Hooks.on("getSceneControlButtons", (controls, b, c) => {
       .tools.push(
         {
           name: "clearTargetReactsBloodSplatter",
-          title: "Heal Token",
+          title: "Bandage Wounds",
           icon: "fas fa-band-aid",
           button: true,
           visible: true,
