@@ -1,6 +1,6 @@
 
 
-function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration, targetName, targetReactionAudioVolume)
+function HurtShake(target, shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration, targetName, targetReactionAudioVolume)
 {
   console.log("Hurt Shaking");
   let bloodEffect = 
@@ -55,11 +55,11 @@ function HurtShake(shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDura
           .volume(targetReactionAudioVolume)
       targetReactsSequence.play();
     }
-    TokenMagic.addFiltersOnTargeted(hurtEffect);
+    TokenMagic.addFilters(target, hurtEffect)
   },shakeDelay);
 }
 
-function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, bloodEffectDelay,targetName, targetReactionAudioVolume)
+function DeathShake(target, shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, bloodEffectDelay,targetName, targetReactionAudioVolume)
 {
   console.log("Death Shaking");
   let deathEffect =
@@ -107,11 +107,11 @@ function DeathShake(shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDuration, blo
           .volume(targetReactionAudioVolume)
       targetReactsSequence.play();
     }
-    TokenMagic.addFiltersOnTargeted(deathEffect);
+    TokenMagic.addFilters(target, deathEffect);
     if(bloodOnDeath)
     {
       setTimeout(function(){
-        TokenMagic.addFiltersOnTargeted(bloodEffect, true);
+        TokenMagic.addFilters(target, bloodEffect, true)
       },bloodEffectDelay);
     }   
   },shakeDelay);
@@ -133,6 +133,7 @@ Hooks.on("midi-qol.RollComplete", function(data){
     let bloodEffectDelay = game.settings.get("targetreacts","deathBloodDelay");
     let woundSizeScalar =  game.settings.get("targetreacts","woundSizeScalar");
 
+    let target = [...data.hitTargets][0];
     let targetName = [...data.hitTargets][0].data.name;
     let hpDamage = data.damageList[0].hpDamage;
     let newHP = data.damageList[0].newHP;
@@ -146,11 +147,11 @@ Hooks.on("midi-qol.RollComplete", function(data){
     }
     if (hpDamage > 0 && newHP > 0)
     {
-      HurtShake(shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime,targetName, targetHurtAudioVolume);
+      HurtShake(target, shakeDelay, bloodOnHurt, woundSize, hurtShakeLoops, hurtShakeLoopTime,targetName, targetHurtAudioVolume);
     }
     else if (hpDamage > 0 && newHP <= 0)
     {
-      DeathShake(shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay, targetName, targetDeathAudioVolume);
+      DeathShake(target, shakeDelay, bloodOnDeath, deathShakeLoops, deathShakeLoopTime, bloodEffectDelay, targetName, targetDeathAudioVolume);
     }
   }
 });
