@@ -135,6 +135,10 @@ Hooks.on("midi-qol.RollComplete", function(data){
 
     let target = [...data.hitTargets][0];
     let targetToken = canvas.tokens.get(target?._id);
+    if(targetToken == undefined)
+    {
+      targetToken = target;
+    }
     let targetName = target.data.name;
     let hpDamage = 0;
     let newHP = 0;
