@@ -135,8 +135,14 @@ Hooks.on("midi-qol.RollComplete", function(data){
 
     let target = [...data.hitTargets][0];
     let targetName = [...data.hitTargets][0].data.name;
-    let hpDamage = data.damageList[0].hpDamage;
-    let newHP = data.damageList[0].newHP;
+    let hpDamage = 0;
+    let newHP = 0;
+    if (data.damageList)
+    {
+      hpDamage = data.damageList[0].hpDamage;
+      newHP = data.damageList[0].newHP;
+    }
+    
     let targetMaxHP = [...data.hitTargets][0].document._actor.data.data.attributes.hp.max;
     let damageTotal = data.damageTotal;
     let HpLost = (damageTotal/targetMaxHP) * 100;
