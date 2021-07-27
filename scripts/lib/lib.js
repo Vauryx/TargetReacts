@@ -1,5 +1,3 @@
-
-
 function HurtShake(target, shakeDelay, bloodOnHurt, woundSize, shakeLoops, shakeLoopDuration, targetName, targetReactionAudioVolume)
 {
   console.log("Hurt Shaking");
@@ -45,15 +43,33 @@ function HurtShake(target, shakeDelay, bloodOnHurt, woundSize, shakeLoops, shake
     hurtEffect.push(bloodEffect);
   }
   setTimeout(function(){
+    let sameSoundForTargets = game.settings.get("targetreacts","sameSoundForTargets");
     let NPCAudio = game.settings.get("targetreacts","audioDB");
-    if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.hurt`))
+    let NPCAudioFile;
+    let targetReactsSequence;
+    if (NPCAudio != "")
     {
-      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt`;
-      let targetReactsSequence = new Sequence()
-      .sound()
-          .file(NPCAudioFile)
-          .volume(targetReactionAudioVolume)
-      targetReactsSequence.play();
+      if(sameSoundForTargets)
+      {
+        NPCAudioFile = NPCAudio;
+        targetReactsSequence = new Sequence()
+        .sound()
+            .file(NPCAudioFile)
+            .volume(targetReactionAudioVolume)
+        targetReactsSequence.play();
+      }
+      else
+      {
+        NPCAudioFile = `TargetReactsAudioDB.${targetName}.hurt` ?? "";
+        if(SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.hurt`))
+        {
+          targetReactsSequence = new Sequence()
+          .sound()
+              .file(NPCAudioFile)
+              .volume(targetReactionAudioVolume)
+          targetReactsSequence.play();
+        }
+      }
     }
     TokenMagic.addFilters(target, hurtEffect)
   },shakeDelay);
@@ -97,15 +113,33 @@ function DeathShake(target, shakeDelay, bloodOnDeath, shakeLoops, shakeLoopDurat
       textureAlphaBlend: false
   }];
   setTimeout(function(){
+    let sameSoundForTargets = game.settings.get("targetreacts","sameSoundForTargets");
     let NPCAudio = game.settings.get("targetreacts","audioDB");
-    if (NPCAudio != "" && SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.dead`))
+    let NPCAudioFile;
+    let targetReactsSequence;
+    if (NPCAudio != "")
     {
-      let NPCAudioFile = `TargetReactsAudioDB.${targetName}.dead` ?? "";
-      let targetReactsSequence = new Sequence()
-      .sound()
-          .file(NPCAudioFile)
-          .volume(targetReactionAudioVolume)
-      targetReactsSequence.play();
+      if(sameSoundForTargets)
+      {
+        NPCAudioFile = NPCAudio;
+        targetReactsSequence = new Sequence()
+        .sound()
+            .file(NPCAudioFile)
+            .volume(targetReactionAudioVolume)
+        targetReactsSequence.play();
+      }
+      else 
+      {
+        NPCAudioFile = `TargetReactsAudioDB.${targetName}.dead` ?? "";
+        if(SequencerDatabase.entryExists(`TargetReactsAudioDB.${targetName}.dead`))
+      {
+        targetReactsSequence = new Sequence()
+        .sound()
+            .file(NPCAudioFile)
+            .volume(targetReactionAudioVolume)
+        targetReactsSequence.play();
+      }
+      }
     }
     TokenMagic.addFilters(target, deathEffect);
     if(bloodOnDeath)

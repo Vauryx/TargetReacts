@@ -2,8 +2,17 @@ import TRActorSettings from "./lib/targetReactPage.js";
 
 Hooks.once('init', async function() {
     console.log("Registering TargetReacts game settings...");
+    game.settings.register("targetreacts", "sameSoundForTargets", {  
+        name: "Use same sound for all target reactions?",                  
+        hint: "Will use the sound file provided below for all target reactions",               
+        scope: "world",                                     
+        config: true,                                      
+        type: Boolean,
+        default: false                                    
+    });
     game.settings.register("targetreacts", "audioDB", {
         name: "Audio JSON File",
+        hint: "Please provide a JSON file if not using the same sound for all enemies, otherwise provide the sound file",
         scope: 'world',
         type: String,
         default: "",
@@ -193,11 +202,15 @@ Hooks.on("sequencer.ready", async () => {
         const json = await response.json();
         return json;
       }
-    let NPCAudio = game.settings.get("targetreacts","audioDB");
-    if (NPCAudio != "")
+    let sameSoundForTargets = game.settings.get("targetreacts", "sameSoundForTargets")
+    if(!sameSoundForTargets)
     {
-        let NPCAudioDB = await getJSON(NPCAudio);
-        SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
+        let NPCAudio = game.settings.get("targetreacts","audioDB");
+        if (NPCAudio != "")
+        {
+            let NPCAudioDB = await getJSON(NPCAudio);
+            SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
+        }
     }
 });
 
