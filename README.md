@@ -1,4 +1,8 @@
-Use this link to install it from within Foundry
+Find Target Reacts within the foundry module installer!
+
+or
+
+Use this link to install it from within Foundry 
 https://github.com/Vauryx/TargetReacts/releases/latest/download/module.json
 
 Default settings can be accessed from Module Settings
