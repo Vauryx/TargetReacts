@@ -38,7 +38,7 @@ export class TargetReaction {
                 filterType: "splash",
                 filterId: "trWoundSplash",
                 rank: 5,
-                color: 0x990505,
+                color: this.actorSettings.hurtSettings.bloodColor,
                 padding: 80,
                 time: Math.random() * 1000,
                 seed: Math.random(),
@@ -56,7 +56,7 @@ export class TargetReaction {
             this.reactionEffect.push({
                 filterType: "splash",
                 filterId: "trDeadSplash",
-                color: 0x900505,
+                color: this.actorSettings.deadSettings.bloodColor,
                 padding: 30,
                 time: Math.random() * 1000,
                 seed: Math.random() / 100,

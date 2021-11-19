@@ -32,13 +32,21 @@ export class TRActorSettings extends FormApplication {
 
         let hurtSettings = {
             volume: this.object.data.flags.targetreacts?.hurtSettings?.volume ?? 1,
-            blood: this.object.data.flags.targetreacts?.hurtSettings?.blood ?? false
+            blood: this.object.data.flags.targetreacts?.hurtSettings?.blood ?? false,
+            bloodColor: this.object.data.flags.targetreacts?.hurtSettings?.bloodColor ?? "#990505",
         };
         let deadSettings = {
             volume: this.object.data.flags.targetreacts?.deadSettings?.volume ?? 1,
-            blood: this.object.data.flags.targetreacts?.deadSettings?.blood ?? false
+            blood: this.object.data.flags.targetreacts?.deadSettings?.blood ?? false,
+            bloodColor: this.object.data.flags.targetreacts?.deadSettings?.bloodColor ?? "#990505",
         };
-
+        // if either deadSettings bloodColor or hurtSettings bloodColor starts with a '0x' then change it to start with '#' instead
+        if (deadSettings.bloodColor.startsWith("0x")) {
+            deadSettings.bloodColor = "#" + deadSettings.bloodColor.substring(2);
+        }
+        if (hurtSettings.bloodColor.startsWith("0x")) {
+            hurtSettings.bloodColor = "#" + hurtSettings.bloodColor.substring(2);
+        }
         return {
             hurtSounds: hurtSounds,
             deadSounds: deadSounds,

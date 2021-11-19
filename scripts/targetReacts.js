@@ -140,12 +140,18 @@ export class targetReacts {
             let targetActor = canvas.tokens.get(damageData.tokenId).actor;
             let actorTREnabled = targetActor.getFlag("targetreacts", "enableTR") ?? false;
             let actorTROptions = {
-                hurtSettings: targetActor.getFlag("targetreacts", "hurtSettings") ?? { blood: false, volume: 1 },
+                hurtSettings: targetActor.getFlag("targetreacts", "hurtSettings") ?? { blood: false, volume: 1, bloodColor: "#990505" },
                 hurtSounds: targetActor.getFlag("targetreacts", "hurtSounds") ?? {},
                 deadSounds: targetActor.getFlag("targetreacts", "deadSounds") ?? {},
-                deadSettings: targetActor.getFlag("targetreacts", "deadSettings") ?? { blood: false, volume: 1 }
+                deadSettings: targetActor.getFlag("targetreacts", "deadSettings") ?? { blood: false, volume: 1, bloodColor: "#990505" },
             };
-
+            // if either deadSettings bloodColor or hurtSettings bloodColor starts with a '#' then change it to start with '0x' instead
+            if (actorTROptions.deadSettings?.bloodColor?.startsWith("#")) {
+                actorTROptions.deadSettings.bloodColor = "0x" + actorTROptions.deadSettings.bloodColor.substring(1);
+            }
+            if (actorTROptions.hurtSettings?.bloodColor?.startsWith("#")) {
+                actorTROptions.hurtSettings.bloodColor = "0x" + actorTROptions.hurtSettings.bloodColor.substring(1);
+            }
             targetReactionSettings.damageData = damageData;
             targetReactionSettings.actorSettings = actorTROptions;
             targetReactionSettings.actorReactionEnabled = actorTREnabled;
