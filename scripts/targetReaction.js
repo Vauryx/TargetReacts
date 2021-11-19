@@ -9,6 +9,8 @@ export class TargetReaction {
         let hitRay = new Ray(this.caster, this.target);
         this.shakeDirection = { x: Math.sign(hitRay.dx), y: Math.sign(hitRay.dy) };
 
+        this.itemReactionEnabled = options.itemReactionEnabled;
+        this.actorReactionEnabled = options.actorReactionEnabled;
         this.itemSettings = options.itemSettings;
         this.actorSettings = options.actorSettings;
         this.targetHurtSounds = options.actorSettings.hurtSounds ?? [];
@@ -19,12 +21,11 @@ export class TargetReaction {
         this.reactionEffect = [];
         this.reactionSequence = new Sequence();
 
-
+        if (options.actorReactionEnabled) {
+            this.buildSound();
+        }
         if (options.itemReactionEnabled) {
             this.buildShake();
-            if (options.actorReactionEnabled) {
-                this.buildSound();
-            }
             if (options.actorSettings.hurtSettings.blood || options.actorSettings.deadSettings.blood) {
                 this.buildBlood();
             }
@@ -73,9 +74,9 @@ export class TargetReaction {
 
     buildShake() {
 
-        const shakeMagnitude = this.alive ? this.itemSettings.hurt.magnitude : this.itemSettings.dead.magnitude;
-        const shakeDuration = this.alive ? this.itemSettings.hurt.duration : this.itemSettings.dead.duration;
-        const shakeAmount = this.alive ? this.itemSettings.hurt.amount : this.itemSettings.dead.amount;
+        const shakeMagnitude = this.alive ? this.itemSettings.hurt?.magnitude : this.itemSettings.dead?.magnitude ?? 0.07;
+        const shakeDuration = this.alive ? this.itemSettings.hurt?.duration : this.itemSettings.dead?.duration ?? 250;
+        const shakeAmount = this.alive ? this.itemSettings.hurt?.amount : this.itemSettings.dead?.amount ?? 2;
 
         this.reactionEffect.push({
             filterType: "transform",
@@ -127,8 +128,11 @@ export class TargetReaction {
     async react() {
         console.log("Hurt target detected...");
         console.log('Target Reaction: ', this);
-        await utilFunctions.wait(this.alive ? this.itemSettings.hurt.reactDelay : this.itemSettings.dead.reactDelay);
+        if (this.itemReactionEnabled) {
+            await utilFunctions.wait(this.alive ? this.itemSettings.hurt?.reactDelay : this.itemSettings.dead?.reactDelay ?? 0);
+        }
         if (this.alive) {
+            console.log("Adding TMFX filters: ", this.target, this.reactionEffect);
             await TokenMagic.addFilters(this.target, this.reactionEffect);
         } else if (!this.alive) {
             if (this.actorSettings.deadSettings.blood) {

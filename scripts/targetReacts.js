@@ -13,17 +13,9 @@ export class targetReacts {
 
     static settings() {
         console.log("Registering TargetReacts game settings...");
-        game.settings.register("targetreacts", "hitShake", {
-            name: "Shake on hit: ",
-            hint: "Shake the target when it hit",
-            scope: "world",
-            config: true,
-            type: Boolean,
-            default: true
-        });
-        game.settings.register("targetreacts", "deathShake", {
-            name: "Shake on Death: ",
-            hint: "Shake the target when it dies from the hit",
+        game.settings.register("targetreacts", "itemReactDefault", {
+            name: "Item Default TR Behaviour",
+            hint: "Item Target Reactions enabled by default?",
             scope: "world",
             config: true,
             type: Boolean,
@@ -33,8 +25,7 @@ export class targetReacts {
     }
 
     static registerHooks() {
-        //Hooks.on("getSceneControlButtons", targetReacts._setSceneMenu);
-        //Hooks.on("sequencer.ready", targetReacts._registerSequencerDB);
+        Hooks.on("getSceneControlButtons", targetReacts._setSceneMenu);
         Hooks.on("renderItemSheet", targetReacts._renderItemSheet);
         Hooks.on(`renderActorSheet5e`, targetReacts._renderActorSheet);
         Hooks.on("midi-qol.RollComplete", targetReacts._midiDamageRollComplete);
@@ -57,36 +48,24 @@ export class targetReacts {
             .tools.push(
                 {
                     name: "clearTargetReactsBloodSplatter",
-                    title: "Bandage Wounds",
+                    title: "Clear TR Blood Effects",
                     icon: "fas fa-band-aid",
                     button: true,
                     visible: true,
-                    onClick: () => {
+                    onClick: async () => {
                         let selectedToken = canvas.tokens.controlled[0];
-                        if (TokenMagic.hasFilterId(selectedToken, "targetReactsWound")) {
-                            TokenMagic.deleteFiltersOnSelected("targetReactsWound");
+                        if (TokenMagic.hasFilterId(selectedToken, "trWoundSplash")) {
+                            await TokenMagic.deleteFiltersOnSelected("trWoundSplash");
 
                         }
-                        if (TokenMagic.hasFilterId(selectedToken, "targetReactsDeath")) {
-                            TokenMagic.deleteFiltersOnSelected("targetReactsDeath");
+                        if (TokenMagic.hasFilterId(selectedToken, "trDeadSplash")) {
+                            await TokenMagic.deleteFiltersOnSelected("trDeadSplash");
                         }
                     },
                 }
             );
 
     }
-
-    static async _registerSequencerDB() {
-        let sameSoundForTargets = game.settings.get("targetreacts", "sameSoundForTargets")
-        if (!sameSoundForTargets) {
-            let NPCAudio = game.settings.get("targetreacts", "audioDB");
-            if (NPCAudio != "") {
-                let NPCAudioDB = await getJSON(NPCAudio);
-                SequencerDatabase.registerEntries("TargetReactsAudioDB", NPCAudioDB);
-            }
-        }
-    }
-
 
     static _renderActorSheet(app, html, data) {
         console.log("Caught actor sheet render hook!");
@@ -122,8 +101,20 @@ export class targetReacts {
             return;
         }
         const item = data.item;
-        const itemTREnabled = item.getFlag("targetreacts", "enableTR") ?? true;
-        const itemTROptions = data.item.getFlag("targetreacts", "settings") ?? {};
+        const itemTREnabled = item.getFlag("targetreacts", "enableTR") ?? game.settings.get("targetreacts", "itemReactDefault");
+        const itemTROptions = data.item.getFlag("targetreacts", "settings") ?? {
+            hurt: {
+                reactDelay: 0,
+                magnitude: 0.07,
+                amount: 2,
+                duration: 250
+            }, dead: {
+                reactDelay: 0,
+                magnitude: 0.04,
+                amount: 4,
+                duration: 250
+            }
+        };
         const casterId = data.tokenId;
 
         const targetReactionSettings = {

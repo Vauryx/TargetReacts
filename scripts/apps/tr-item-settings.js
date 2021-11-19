@@ -49,7 +49,7 @@ export class TRItemSettings extends FormApplication {
     async getData() {
         let item = this.object;
         let itemName = item.name;
-        let enabled = item.data?.flags?.targetreacts?.enableTR ?? true;
+        let enabled = item.data?.flags?.targetreacts?.enableTR ?? game.settings.get("targetreacts", "itemReactDefault");
         let settings = await this.getSettings();
         return {
             flags: this.object.data.flags,
