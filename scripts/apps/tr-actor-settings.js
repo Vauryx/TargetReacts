@@ -26,27 +26,41 @@ export class TRActorSettings extends FormApplication {
         });
     }
 
-    async getSounds() {
+    async getSettings() {
         let hurtSounds = this.object.data.flags.targetreacts?.hurtSounds ?? [{ path: "" }];
         let deadSounds = this.object.data.flags.targetreacts?.deadSounds ?? [{ path: "" }];
+
+        let hurtSettings = {
+            volume: this.object.data.flags.targetreacts?.hurtSettings?.volume ?? 1,
+            blood: this.object.data.flags.targetreacts?.hurtSettings?.blood ?? false
+        };
+        let deadSettings = {
+            volume: this.object.data.flags.targetreacts?.deadSettings?.volume ?? 1,
+            blood: this.object.data.flags.targetreacts?.deadSettings?.blood ?? false
+        };
+
         return {
             hurtSounds: hurtSounds,
-            deadSounds: deadSounds
+            deadSounds: deadSounds,
+            hurtSettings: hurtSettings,
+            deadSettings: deadSettings
         }
     };
 
     async getData() {
         let actor = this.object;
         let enabled = actor.data?.flags?.targetreacts?.enableTR ?? true;
-        const sounds = await this.getSounds();
+        const settings = await this.getSettings();
         //console.log("Target Reaction Sounds: ", sounds);
         //console.log("HURT SOUNDS: ", sounds);
         //console.log("TR ACTOR SETTINGS FORM: ", this);
         return {
             flags: this.object.data.flags,
             enabled: enabled,
-            hurtSounds: sounds.hurtSounds,
-            deadSounds: sounds.deadSounds
+            hurtSounds: settings.hurtSounds,
+            deadSounds: settings.deadSounds,
+            hurtSettings: settings.hurtSettings,
+            deadSettings: settings.deadSettings
         };
 
     }

@@ -123,7 +123,7 @@ export class targetReacts {
         }
         const item = data.item;
         const itemTREnabled = item.getFlag("targetreacts", "enableTR") ?? true;
-        const itemTROptions = data.item.getFlag("targetreacts", "options") ?? {};
+        const itemTROptions = data.item.getFlag("targetreacts", "settings") ?? {};
         const casterId = data.tokenId;
 
         const targetReactionSettings = {
@@ -139,7 +139,12 @@ export class targetReacts {
         for (const damageData of damageList) {
             let targetActor = canvas.tokens.get(damageData.tokenId).actor;
             let actorTREnabled = targetActor.getFlag("targetreacts", "enableTR") ?? false;
-            let actorTROptions = { hurtSounds: targetActor.getFlag("targetreacts", "hurtSounds") ?? {}, deadSounds: targetActor.getFlag("targetreacts", "deadSounds") ?? {} };
+            let actorTROptions = {
+                hurtSettings: targetActor.getFlag("targetreacts", "hurtSettings") ?? { blood: false, volume: 1 },
+                hurtSounds: targetActor.getFlag("targetreacts", "hurtSounds") ?? {},
+                deadSounds: targetActor.getFlag("targetreacts", "deadSounds") ?? {},
+                deadSettings: targetActor.getFlag("targetreacts", "deadSettings") ?? { blood: false, volume: 1 }
+            };
 
             targetReactionSettings.damageData = damageData;
             targetReactionSettings.actorSettings = actorTROptions;

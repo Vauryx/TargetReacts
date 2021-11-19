@@ -58,6 +58,34 @@
                                 </button>
                             </div>
                         </div>
+                        <table id="hurtSettingsTable" class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label><b>Target Volume: </b></label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtVolumeInput" style='width: 4em;' min="0" max="2"
+                                            oninput="this.form['flags.targetreacts.hurtSettings.volume'].value = this.value"
+                                            value={{hurtSettings.volume}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="2" step="0.05"
+                                            oninput="this.form.hurtVolumeInput.value = this.value"
+                                            name="flags.targetreacts.hurtSettings.volume" value={{hurtSettings.volume}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Enable Blood:</b> </label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="checkbox" name="flags.targetreacts.hurtSettings.blood" {{checked
+                                            hurtSettings.blood}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="tr-dead-settings" class="hide">
                         <table id="deadSoundsTable" class="tr-dead-settings-table">
@@ -95,7 +123,33 @@
                                 </button>
                             </div>
                         </div>
-                        </tbody>
+                        <table id="deadSettingsTable" class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label><b>Target Volume: </b></label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadVolumeInput"
+                                            oninput="this.form['flags.targetreacts.deadSettings.volume'].value = this.value"
+                                            min="0" max="2" style='width: 4em;' value={{deadSettings.volume}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="2" step="0.05"
+                                            oninput="this.form.deadVolumeInput.value = this.value"
+                                            name="flags.targetreacts.deadSettings.volume" value={{deadSettings.volume}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Enable Blood:</b> </label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="checkbox" name="flags.targetreacts.deadSettings.blood" {{checked
+                                            deadSettings.blood}}>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

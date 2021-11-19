@@ -24,14 +24,39 @@ export class TRItemSettings extends FormApplication {
         });
     }
 
+    async getSettings() {
+
+        let hurtSettings = {
+            magnitude: this.object.data.flags.targetreacts?.settings?.hurt?.magnitude ?? 0.07,
+            duration: this.object.data.flags.targetreacts?.settings?.hurt?.duration ?? 250,
+            amount: this.object.data.flags.targetreacts?.settings?.hurt?.amount ?? 2,
+            reactDelay: this.object.data.flags.targetreacts?.settings?.hurt?.reactDelay ?? 0,
+        };
+        let deadSettings = {
+            magnitude: this.object.data.flags.targetreacts?.settings?.dead?.magnitude ?? 0.04,
+            duration: this.object.data.flags.targetreacts?.settings?.dead?.duration ?? 250,
+            amount: this.object.data.flags.targetreacts?.settings?.dead?.amount ?? 4,
+            reactDelay: this.object.data.flags.targetreacts?.settings?.dead?.reactDelay ?? 0,
+        };
+
+        return {
+            hurtSettings: hurtSettings,
+            deadSettings: deadSettings
+        }
+    };
+
+
     async getData() {
         let item = this.object;
         let itemName = item.name;
         let enabled = item.data?.flags?.targetreacts?.enableTR ?? true;
+        let settings = await this.getSettings();
         return {
             flags: this.object.data.flags,
             itemName: itemName,
-            enabled: enabled
+            enabled: enabled,
+            hurtSettings: settings.hurtSettings,
+            deadSettings: settings.deadSettings,
         };
 
     }
