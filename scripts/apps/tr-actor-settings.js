@@ -6,6 +6,7 @@ export class TRActorSettings extends FormApplication {
         super(...arguments);
         this.flags = this.object.data.flags.targetreacts;
         this.actor = this.object;
+        this.html = [];
         if (this.flags) {
             if (!this.flags.options) {
                 this.flags.options = {};
@@ -36,65 +37,68 @@ export class TRActorSettings extends FormApplication {
 
     async getData() {
         let actor = this.object;
-        let actorName = actor.name;
         let enabled = actor.data?.flags?.targetreacts?.enableTR ?? true;
         const sounds = await this.getSounds();
+        //console.log("Target Reaction Sounds: ", sounds);
         //console.log("HURT SOUNDS: ", sounds);
         //console.log("TR ACTOR SETTINGS FORM: ", this);
         return {
             flags: this.object.data.flags,
-            actorName: actorName,
             enabled: enabled,
             hurtSounds: sounds.hurtSounds,
             deadSounds: sounds.deadSounds
         };
 
     }
-    activateListeners(html) {
-        const body = $("#tr-actor-settings");
-        const deadSettings = $("#tr-dead-settings");
-        const deadSettingsButton = $(".tr-dead-settingsButton");
-        const hurtSettings = $("#tr-hurt-settings");
-        const hurtSettingsButton = $(".tr-hurt-settingsButton");
-
-        let currentTab = hurtSettingsButton;
-        let currentBody = hurtSettings;
-
-
+    activateListeners(html, newRow = false) {
+        //console.log(html);
         super.activateListeners(html);
-        $(".nav-tab").click(function () {
-            currentBody.toggleClass("hide");
-            currentTab.toggleClass("selected");
-            if ($(this).hasClass("tr-dead-settingsButton")) {
-                //console.log("dead");
-                deadSettings.toggleClass("hide");
-                currentBody = deadSettings;
-                currentTab = deadSettingsButton;
-            } else if ($(this).hasClass("tr-sound-settingsButton")) {
-                //console.log("sound");
-                soundSettings.toggleClass("hide");
-                currentBody = soundSettings;
-                currentTab = soundSettingsButton;
-            } else if ($(this).hasClass("tr-hurt-settingsButton")) {
-                //console.log("hurt");
-                hurtSettings.toggleClass("hide");
-                currentBody = hurtSettings;
-                currentTab = hurtSettingsButton;
-            }
-            currentTab.toggleClass("selected");
-            body.height("auto");
-            body.width("auto");
-        });
+        if (!newRow) {
+            //console.log("ACTIVATING LISTENERS");
+            const body = $("#tr-actor-settings");
+            const deadSettings = $("#tr-dead-settings");
+            const deadSettingsButton = $(".tr-dead-settingsButton");
+            const hurtSettings = $("#tr-hurt-settings");
+            const hurtSettingsButton = $(".tr-hurt-settingsButton");
 
-        html.find('.tr-enable-checkbox input[type="checkbox"]').click(evt => {
-            this.submit({ preventClose: true }).then(() => this.render());
-        });
+            let currentTab = hurtSettingsButton;
+            let currentBody = hurtSettings;
+            this.html = html;
 
-        html.find('.addHurtSound').click(this._addHurtSound.bind(this));
-        html.find('.removeHurtSound').click(this._removeHurtSound.bind(this));
+            $(".nav-tab").click(function () {
+                currentBody.toggleClass("hide");
+                currentTab.toggleClass("selected");
+                if ($(this).hasClass("tr-dead-settingsButton")) {
+                    //console.log("dead");
+                    deadSettings.toggleClass("hide");
+                    currentBody = deadSettings;
+                    currentTab = deadSettingsButton;
+                } else if ($(this).hasClass("tr-sound-settingsButton")) {
+                    //console.log("sound");
+                    soundSettings.toggleClass("hide");
+                    currentBody = soundSettings;
+                    currentTab = soundSettingsButton;
+                } else if ($(this).hasClass("tr-hurt-settingsButton")) {
+                    //console.log("hurt");
+                    hurtSettings.toggleClass("hide");
+                    currentBody = hurtSettings;
+                    currentTab = hurtSettingsButton;
+                }
+                currentTab.toggleClass("selected");
+                body.height("auto");
+                body.width("auto");
+            });
 
-        html.find('.addDeadSound').click(this._addDeadSound.bind(this));
-        html.find('.removeDeadSound').click(this._removeDeadSound.bind(this));
+            html.find('.tr-enable-checkbox input[type="checkbox"]').click(evt => {
+                this.submit({ preventClose: true }).then(() => this.render());
+            });
+
+            html.find('.addHurtSound').click(this._addHurtSound.bind(this));
+            html.find('.removeHurtSound').click(this._removeHurtSound.bind(this));
+
+            html.find('.addDeadSound').click(this._addDeadSound.bind(this));
+            html.find('.removeDeadSound').click(this._removeDeadSound.bind(this));
+        }
     }
 
     async _addHurtSound(e) {
@@ -116,6 +120,7 @@ export class TRActorSettings extends FormApplication {
                                                 <i class="fas fa-music fa-sm"></i>
                                             </button>`;
         //this.submit({ preventClose: true }).then(() => this.render());
+        this.activateListeners(this.html, true);
         $("#tr-actor-settings").height("auto");
         $("#tr-actor-settings").width("auto");
     }
@@ -123,14 +128,14 @@ export class TRActorSettings extends FormApplication {
     async _removeHurtSound(e) {
         //console.log(e);
         let soundsTable = document.getElementById("hurtSoundsTable").getElementsByTagName('tbody')[0];
+        if (soundsTable.rows.length == 0) return;
         let row = soundsTable.rows[soundsTable.rows.length - 1];
         let cells = row.cells;
         //console.log(row, cells);
         let hurtSoundIndex = cells[1].children[0].name.match(/\d+/)[0];
         //console.log(hurtSoundIndex);
-        const actor = game.actors.get(this.actor.id);
         soundsTable.rows[soundsTable.rows.length - 1].remove();
-        await actor.unsetFlag("targetreacts", `hurtSounds.${hurtSoundIndex}`);
+        await this.actor.unsetFlag("targetreacts", `hurtSounds.${hurtSoundIndex}`);
         if (this.flags) {
             delete this.flags.hurtSounds[hurtSoundIndex];
         }
@@ -160,6 +165,9 @@ export class TRActorSettings extends FormApplication {
                                                 <i class="fas fa-music fa-sm"></i>
                                             </button>`;
         //this.submit({ preventClose: true }).then(() => this.render());
+        //console.log(this);
+
+        this.activateListeners(this.html, true);
         $("#tr-actor-settings").height("auto");
         $("#tr-actor-settings").width("auto");
     }
@@ -167,17 +175,21 @@ export class TRActorSettings extends FormApplication {
     async _removeDeadSound(e) {
         //console.log(e);
         let soundsTable = document.getElementById("deadSoundsTable").getElementsByTagName('tbody')[0];
+        if (soundsTable.rows.length == 0) return;
         let row = soundsTable.rows[soundsTable.rows.length - 1];
         let cells = row.cells;
         //console.log(row, cells);
         let deadSoundIndex = cells[1].children[0].name.match(/\d+/)[0];
         //console.log(deadSoundIndex);
-        const actor = game.actors.get(this.actor.id);
+
+        //console.log("Actor: ", this.actor);
         soundsTable.rows[soundsTable.rows.length - 1].remove();
-        await actor.unsetFlag("targetreacts", `deadSounds.${deadSoundIndex}`);
+        await this.actor.unsetFlag("targetreacts", `deadSounds.${deadSoundIndex}`);
+
         if (this.flags) {
             delete this.flags.deadSounds[deadSoundIndex];
         }
+
 
         //console.log(this.flags);
         //this.submit({ preventClose: true }).then(() => this.render());

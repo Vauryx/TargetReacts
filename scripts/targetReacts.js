@@ -107,7 +107,7 @@ export class targetReacts {
 
     static async _midiDamageRollComplete(data) {
         console.log("-----------------Processing Target Reaction--------------------");
-        console.log("----------------------------------------------------------------");
+
         //console.log("Target Reacts MIDI Data: ", data);
         //console.log("Hit targets: ", data.hitTargets);
         //console.log("Failed Saves: ", data.failedSaves);
@@ -122,35 +122,32 @@ export class targetReacts {
             return;
         }
         const item = data.item;
-        //console.log("Target Reacts Flags: ", item.data.flags.targetreacts);
-        const trEnabled = item.getFlag("targetreacts", "enableTR") ?? true;
-        if (!trEnabled) return;
+        const itemTREnabled = item.getFlag("targetreacts", "enableTR") ?? true;
         const itemTROptions = data.item.getFlag("targetreacts", "options") ?? {};
         const casterId = data.tokenId;
+
+        const targetReactionSettings = {
+            itemSettings: itemTROptions,
+            actorSettings: {},
+            itemReactionEnabled: itemTREnabled,
+            actorReactionEnabled: false,
+            casterId: casterId,
+            damageData: {}
+        };
         //console.log("Item TR Options: ", itemTROptions);
 
         for (const damageData of damageList) {
-            // console.log("Damage Data: ", damageData);
-            if (damageData.newHP > 0) {
-                //console.log("Target is alive!");
-                if (game.settings.get("targetreacts", "hitShake")) {
-                    console.log("Shaking target from hit!");
-                    //await targetHurt(damageData, itemTROptions, casterId);
-                    let reaction = new TargetReaction(damageData, itemTROptions, casterId);
-                    reaction.buildReactionEffect();
-                    console.log("Reaction: ", reaction);
-                    await reaction.react();
-                }
-            }
-            else {
-                //console.log("Target is dead!");
-                if (game.settings.get("targetreacts", "deathShake")) {
-                    console.log("Shaking target from death!");
-                    // targetHurt(damageData, itemTROptions);
-                }
-            }
-        }
+            let targetActor = canvas.tokens.get(damageData.tokenId).actor;
+            let actorTREnabled = targetActor.getFlag("targetreacts", "enableTR") ?? false;
+            let actorTROptions = { hurtSounds: targetActor.getFlag("targetreacts", "hurtSounds") ?? {}, deadSounds: targetActor.getFlag("targetreacts", "deadSounds") ?? {} };
 
+            targetReactionSettings.damageData = damageData;
+            targetReactionSettings.actorSettings = actorTROptions;
+            targetReactionSettings.actorReactionEnabled = actorTREnabled;
+            let reaction = new TargetReaction(targetReactionSettings);
+            await reaction.react();
+        }
+        console.log("----------------------------------------------------------------");
     }
 }
 
