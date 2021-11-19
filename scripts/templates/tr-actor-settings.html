@@ -1,0 +1,113 @@
+<form class="tr-settings-form" id="trActorSettingsForm" autocomplete="off" novalidate>
+    <section class="content">
+        <div class="tr-enable-checkbox">
+            <div class="form-group">
+                <label>Enable Target Reactions: </label>
+                <input type="checkbox" name="flags.targetreacts.enableTR" {{checked enabled}}>
+            </div>
+        </div>
+        <div class="tr-enabled-content">
+            {{#if enabled}}
+                <div class="tr-settings-tabs">
+                    <button class="nav-tab tr-hurt-settingsButton selected" type="button"
+                        title="Hurt Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-bahai"></i>
+                        </div>
+                    </button>
+                    <button class="nav-tab tr-dead-settingsButton " type="button" title="Death Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="tr-settings-body">
+                    <div id="tr-hurt-settings" class="show">
+                        <table id="hurtSoundsTable" class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                {{#each hurtSounds}}
+                                    <tr>
+                                        <td>
+                                            <label><b>Sound File Path: </b></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="files"
+                                                name="flags.targetreacts.hurtSounds.{{@index}}.path"
+                                                value={{this.path}}>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="file-picker" data-type="audio"
+                                                data-target="flags.targetreacts.hurtSounds.{{@index}}.path"
+                                                tabindex="-1" title="Browse Files">
+                                                <i class="fas fa-music fa-sm"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <div style="text-align:center;">
+                            <div style="margin:auto;">
+                                <button class='addHurtSound' type="button" style="width:50%;text-align:center;">
+                                    Add Sound
+                                </button>
+                            </div>
+                            <div style="margin:auto;">
+                                <button class='removeHurtSound' type="button" style="width:50%;text-align:center;">
+                                    <i class="fas fa-times"></i> Remove Sound
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tr-dead-settings" class="hide">
+                        <table id="deadSoundsTable" class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                {{#each deadSounds}}
+                                    <tr>
+                                        <td>
+                                            <label><b>Sound File Path: </b></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="files"
+                                                name="flags.targetreacts.deadSounds.{{@index}}.path"
+                                                value={{this.path}}>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="file-picker" data-type="audio"
+                                                data-target="flags.targetreacts.deadSounds.{{@index}}.path"
+                                                tabindex="-1" title="Browse Files">
+                                                <i class="fas fa-music fa-sm"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <div style="text-align:center;">
+                            <div style="margin:auto;">
+                                <button class='addDeadSound' type="button" style="width:50%;text-align:center;">
+                                    Add Sound
+                                </button>
+                            </div>
+                            <div style="margin:auto;">
+                                <button class='removeDeadSound' type="button" style="width:50%;text-align:center;">
+                                    <i class="fas fa-times"></i> Remove Sound
+                                </button>
+                            </div>
+                        </div>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-save"></i> Save and Close
+        </button>
+    </footer>
+</form>
+
+<!---->

@@ -1,0 +1,75 @@
+<form class="tr-settings-form" id="trItemSettingsForm" autocomplete="off" novalidate>
+    <section class="content">
+        <div class="tr-enable-checkbox">
+            <div class="form-group">
+                <label>Enable Target Reactions: </label>
+                <input type="checkbox" name="flags.targetreacts.enableTR" {{checked enabled}}>
+            </div>
+        </div>
+        <div class="tr-enabled-content">
+            {{#if enabled}}
+                <div class="tr-settings-tabs">
+                    <button class="nav-tab tr-hurt-settingsButton selected" type="button"
+                        title="Hurt Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-bahai"></i>
+                        </div>
+                    </button>
+                    <button class="nav-tab tr-dead-settingsButton " type="button" title="Death Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="tr-settings-body">
+                    <div id="tr-hurt-settings" class="show">
+                        <table class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label
+                                            title="Delay on the target's reaction caused by this item when target is hurt but not dead from the hit">
+                                            <b>Hurt Reaction Delay: </b>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input class="tr-hurt-settings-numInput" type="Number" style="width: 4em;"
+                                            min="0" name="flags.targetreacts.options.hurtReactDelay"
+                                            value={{flags.targetreacts.options.hurtReactDelay}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tr-dead-settings" class="hide">
+                        <table class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label
+                                            title="Delay on the target's reaction caused by this item if target dies from the hit">
+                                            <b>Death Reaction Delay: </b>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input class="tr-dead-settings-numInput" type="Number" style="width: 4em;"
+                                            min="0" name="flags.targetreacts.options.deadReactDelay"
+                                            value={{flags.targetreacts.options.deadReactDelay}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-save"></i> Save and Close
+        </button>
+    </footer>
+</form>
+
+<!---->

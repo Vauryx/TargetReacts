@@ -12,10 +12,10 @@ export class TRActorSettings extends FormApplication {
             resizable: true,
             width: 600,
             height: "auto",
-            closeOnSubmit: true,
-            tabs: [{ navSelector: ".tabs", contentSelector: ".content", initial: "audio-override" }]
+            closeOnSubmit: true
         });
     }
+    
     getData() {
         let flags = this.object.data.flags;
         console.log(flags);

@@ -1,0 +1,23 @@
+{
+        "Thug":
+                {"dead": "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Male_Humanoid/dead.wav", 
+                "hurt": ["Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Male_Humanoid/hit1.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Male_Humanoid/hit2.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Male_Humanoid/hit3.wav"]},
+        "Mimic":
+                {"dead": "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Devil/dead.wav", 
+                "hurt": ["Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Devil/hit1.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Devil/hit2.wav"]},
+        "Jackalwere":
+                {"dead": "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Werewolf/dead.wav", 
+                "hurt": ["Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Werewolf/hit1.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Werewolf/hit2.wav"]},
+        "Wererat":
+                {"dead": "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Kobold/dead.wav", 
+                "hurt": ["Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Kobold/hit1.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Kobold/hit2.wav"]},
+        "Giant Rat":
+                {"dead": "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Giant_Rat/dead.wav", 
+                "hurt": ["Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Giant_Rat/hit1.wav",
+                                "Audio/EXAMPLE_ASSETS/Combat/Hurt_Sounds/Giant_Rat/hit2.wav"]}           
+}
