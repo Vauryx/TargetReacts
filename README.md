@@ -26,7 +26,7 @@
 - The second tab controlls settings for when the target dies from the hit 
 
 ![target-reacts-actor-settings](https://user-images.githubusercontent.com/32877348/142693877-d37d92c6-fc0d-4705-bc48-2c4330d8e5e9.png)
-- **Sound File Path: ** Path to the sound file 
+- **Sound File Path:** Path to the sound file 
 - **Add Sound:** Add a new row to be assign another sound
 - **Remove Sound:** Remove the bottom sound file row
 - **Target Volume:** Volume of the sound effect played
