@@ -14,6 +14,7 @@
 # Item Settings
 - These are the item specific settings. The first tab controlls settings for when the target is hit, but does not die from the hit
 - The second tab controlls settings for when the target dies from the hit 
+
 ![target-reacts-item-settings](https://user-images.githubusercontent.com/32877348/142693460-f01692ab-0783-4fed-b889-89c407a7a74e.png)
 - ** Reaction Delay: **  Delay on the target's reaction caused by this item 
 - ** Shake Magnitude: ** How far from the initial spot the target will move
@@ -23,6 +24,7 @@
 # Actor Settings
 - These are the actor specific settings. Similarly to the item settings, the first tab controlls settings for when the target is hit, but does not die from the hit
 - The second tab controlls settings for when the target dies from the hit 
+
 ![target-reacts-actor-settings](https://user-images.githubusercontent.com/32877348/142693877-d37d92c6-fc0d-4705-bc48-2c4330d8e5e9.png)
 - **Sound File Path: ** Path to the sound file 
 - ** Add Sound: ** Add a new row to be assign another sound
