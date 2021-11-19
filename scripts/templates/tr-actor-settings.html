@@ -1,0 +1,185 @@
+<form class="tr-settings-form" id="trActorSettingsForm" autocomplete="off" novalidate>
+    <section class="content">
+        <div class="tr-enable-checkbox">
+            <div class="form-group">
+                <label>Enable Target Sound Reactions: </label>
+                <input type="checkbox" name="flags.targetreacts.enableTR" {{checked enabled}}>
+            </div>
+        </div>
+        <div class="tr-enabled-content">
+            {{#if enabled}}
+                <div class="tr-settings-tabs">
+                    <button class="nav-tab tr-hurt-settingsButton selected" type="button"
+                        title="Hurt Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-bahai"></i>
+                        </div>
+                    </button>
+                    <button class="nav-tab tr-dead-settingsButton " type="button" title="Death Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="tr-settings-body">
+                    <div id="tr-hurt-settings" class="show">
+                        <table id="hurtSoundsTable" class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                {{#each hurtSounds}}
+                                    <tr>
+                                        <td>
+                                            <label><b>Sound File Path: </b></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="files"
+                                                name="flags.targetreacts.hurtSounds.{{@index}}.path"
+                                                value={{this.path}}>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="file-picker" data-type="audio"
+                                                data-target="flags.targetreacts.hurtSounds.{{@index}}.path"
+                                                tabindex="-1" title="Browse Files">
+                                                <i class="fas fa-music fa-sm"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <div style="text-align:center;">
+                            <div style="margin:auto;">
+                                <button class='addHurtSound' type="button" style="width:50%;text-align:center;">
+                                    Add Sound
+                                </button>
+                            </div>
+                            <div style="margin:auto;">
+                                <button class='removeHurtSound' type="button" style="width:50%;text-align:center;">
+                                    <i class="fas fa-times"></i> Remove Sound
+                                </button>
+                            </div>
+                        </div>
+                        <table id="hurtSettingsTable" class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label><b>Target Volume: </b></label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtVolumeInput" style='width: 4em;' min="0" max="2"
+                                            oninput="this.form['flags.targetreacts.hurtSettings.volume'].value = this.value"
+                                            value={{hurtSettings.volume}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="2" step="0.05"
+                                            oninput="this.form.hurtVolumeInput.value = this.value"
+                                            name="flags.targetreacts.hurtSettings.volume" value={{hurtSettings.volume}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Enable Blood:</b> </label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="checkbox" name="flags.targetreacts.hurtSettings.blood" {{checked
+                                            hurtSettings.blood}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Blood Color: </b></label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="color" name="flags.targetreacts.hurtSettings.bloodColor"
+                                            value={{hurtSettings.bloodColor}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tr-dead-settings" class="hide">
+                        <table id="deadSoundsTable" class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                {{#each deadSounds}}
+                                    <tr>
+                                        <td>
+                                            <label><b>Sound File Path: </b></label>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="files"
+                                                name="flags.targetreacts.deadSounds.{{@index}}.path"
+                                                value={{this.path}}>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="file-picker" data-type="audio"
+                                                data-target="flags.targetreacts.deadSounds.{{@index}}.path"
+                                                tabindex="-1" title="Browse Files">
+                                                <i class="fas fa-music fa-sm"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <div style="text-align:center;">
+                            <div style="margin:auto;">
+                                <button class='addDeadSound' type="button" style="width:50%;text-align:center;">
+                                    Add Sound
+                                </button>
+                            </div>
+                            <div style="margin:auto;">
+                                <button class='removeDeadSound' type="button" style="width:50%;text-align:center;">
+                                    <i class="fas fa-times"></i> Remove Sound
+                                </button>
+                            </div>
+                        </div>
+                        <table id="deadSettingsTable" class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label><b>Target Volume: </b></label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadVolumeInput"
+                                            oninput="this.form['flags.targetreacts.deadSettings.volume'].value = this.value"
+                                            min="0" max="2" style='width: 4em;' value={{deadSettings.volume}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="2" step="0.05"
+                                            oninput="this.form.deadVolumeInput.value = this.value"
+                                            name="flags.targetreacts.deadSettings.volume" value={{deadSettings.volume}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Enable Blood:</b> </label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="checkbox" name="flags.targetreacts.deadSettings.blood" {{checked
+                                            deadSettings.blood}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label><b>Blood Color: </b> </label>
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="color" name="flags.targetreacts.deadSettings.bloodColor"
+                                            value={{deadSettings.bloodColor}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-save"></i> Save and Close
+        </button>
+    </footer>
+</form>
+
+<!---->

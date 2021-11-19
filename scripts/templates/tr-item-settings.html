@@ -1,0 +1,189 @@
+<form class="tr-settings-form" id="trItemSettingsForm" autocomplete="off" novalidate>
+    <section class="content">
+        <div class="tr-enable-checkbox">
+            <div class="form-group">
+                <label>Enable Target Reactions: </label>
+                <input type="checkbox" name="flags.targetreacts.enableTR" {{checked enabled}}>
+            </div>
+        </div>
+        <div class="tr-enabled-content">
+            {{#if enabled}}
+                <div class="tr-settings-tabs">
+                    <button class="nav-tab tr-hurt-settingsButton selected" type="button"
+                        title="Hurt Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-bahai"></i>
+                        </div>
+                    </button>
+                    <button class="nav-tab tr-dead-settingsButton " type="button" title="Death Reaction Settings">
+                        <div style="text-align:center">
+                            <i class="fas fa-skull"></i>
+                        </div>
+                    </button>
+                </div>
+                <div id="tr-settings-body">
+                    <div id="tr-hurt-settings" class="show">
+                        <table class="tr-hurt-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label
+                                            title="Delay on the target's reaction caused by this item when target is hurt but not dead from the hit">
+                                            <b>Hurt Reaction Delay: </b>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtReactDelayInput"
+                                            oninput="this.form['flags.targetreacts.settings.hurt.reactDelay'].value = this.value"
+                                            min="0" max="5000" style='width: 4em;' value={{hurtSettings.reactDelay}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="5000" step="10"
+                                            oninput="this.form.hurtReactDelayInput.value = this.value"
+                                            name="flags.targetreacts.settings.hurt.reactDelay"
+                                            value={{hurtSettings.reactDelay}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How far from the initial spot the target will move"><b> Shake
+                                                Magnitude: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtMagnitudeInput"
+                                            oninput="this.form['flags.targetreacts.settings.hurt.magnitude'].value = this.value"
+                                            min="0.01" max="2" style='width: 4em;' value={{hurtSettings.magnitude}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0.01" max="2" step="0.01"
+                                            oninput="this.form.hurtMagnitudeInput.value = this.value"
+                                            name="flags.targetreacts.settings.hurt.magnitude"
+                                            value={{hurtSettings.magnitude}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How many times to shake the target"><b> Shake
+                                                Amount: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtAmountInput"
+                                            oninput="this.form['flags.targetreacts.settings.hurt.amount'].value = this.value"
+                                            min="1" max="10" style='width: 4em;' value={{hurtSettings.amount}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="1" max="10" step="1"
+                                            oninput="this.form.hurtAmountInput.value = this.value"
+                                            name="flags.targetreacts.settings.hurt.amount"
+                                            value={{hurtSettings.amount}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How long each (singular) shake animation will take"><b> Shake
+                                                Duration: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="hurtDurationInput" style='width: 4em;'
+                                            oninput="this.form['flags.targetreacts.settings.hurt.duration'].value = this.value"
+                                            min="10" max="2500" value={{hurtSettings.duration}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="10" max="2500" step="10"
+                                            oninput="this.form.hurtDurationInput.value = this.value"
+                                            name="flags.targetreacts.settings.hurt.duration"
+                                            value={{hurtSettings.duration}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tr-dead-settings" class="hide">
+                        <table class="tr-dead-settings-table">
+                            <tbody style='border-top: 1pt solid black;border-bottom: 1pt solid black;'>
+                                <tr>
+                                    <td>
+                                        <label
+                                            title="Delay on the target's reaction caused by this item when target is dies from the hit">
+                                            <b>Death Reaction Delay: </b>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadReactDelayInput"
+                                            oninput="this.form['flags.targetreacts.settings.dead.reactDelay'].value = this.value"
+                                            min="0" max="5000" style='width: 4em;' value={{deadSettings.reactDelay}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0" max="5000" step="10"
+                                            oninput="this.form.deadReactDelayInput.value = this.value"
+                                            name="flags.targetreacts.settings.dead.reactDelay"
+                                            value={{deadSettings.reactDelay}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How far from the initial spot the target will move"><b> Shake
+                                                Magnitude: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadMagnitudeInput"
+                                            oninput="this.form['flags.targetreacts.settings.dead.magnitude'].value = this.value"
+                                            min="0.01" max="2" style='width: 4em;' value={{deadSettings.magnitude}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0.01" max="2" step="0.01"
+                                            oninput="this.form.deadMagnitudeInput.value = this.value"
+                                            name="flags.targetreacts.settings.dead.magnitude"
+                                            value={{deadSettings.magnitude}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How many times to shake the target"><b> Shake
+                                                Amount: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadAmountInput"
+                                            oninput="this.form['flags.targetreacts.settings.dead.amount'].value = this.value"
+                                            min="1" max="10" style='width: 4em;' value={{deadSettings.amount}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="1" max="10" step="1"
+                                            oninput="this.form.deadAmountInput.value = this.value"
+                                            name="flags.targetreacts.settings.dead.amount"
+                                            value={{deadSettings.amount}}>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label title="How long each (singular) shake animation will take"><b> Shake
+                                                Duration: </b> </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="deadDurationInput" style='width: 4em;'
+                                            oninput="this.form['flags.targetreacts.settings.dead.duration'].value = this.value"
+                                            min="10" max="2500" value={{deadSettings.duration}} />
+                                    </td>
+                                    <td>
+                                        <input type="range" min="10" max="2500" step="10"
+                                            oninput="this.form.deadDurationInput.value = this.value"
+                                            name="flags.targetreacts.settings.dead.duration"
+                                            value={{deadSettings.duration}}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-save"></i> Save and Close
+        </button>
+    </footer>
+</form>
+
+<!---->
