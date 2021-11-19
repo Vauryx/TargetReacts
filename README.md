@@ -20,7 +20,7 @@
 - **Shake Magnitude:** How far from the initial spot the target will move
 - **Shake Amount:** How many times to shake the target
 - **Shake Duration:** How long each (singular) shake animation will take in ms
-- 
+
 # Actor Settings
 - These are the actor specific settings. Similarly to the item settings, the first tab controlls settings for when the target is hit, but does not die from the hit
 - The second tab controlls settings for when the target dies from the hit 
