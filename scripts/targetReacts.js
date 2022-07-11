@@ -2,6 +2,7 @@
 import { TargetReaction } from "./targetReaction.js"
 import { TRItemSettings } from "./apps/tr-item-settings.js";
 import { TRActorSettings } from "./apps/tr-actor-settings.js";
+import * as utilFunctions from "./utilityFunctions.js";
 
 const NAME = "targetreacts";
 
@@ -28,7 +29,12 @@ export class targetReacts {
         Hooks.on("getSceneControlButtons", targetReacts._setSceneMenu);
         Hooks.on("renderItemSheet", targetReacts._renderItemSheet);
         Hooks.on(`renderActorSheet5e`, targetReacts._renderActorSheet);
-        Hooks.on("midi-qol.RollComplete", targetReacts._midiDamageRollComplete);
+        if (utilFunctions.isMidiActive()) {
+            Hooks.on("midi-qol.RollComplete", targetReacts._midiDamageRollComplete);
+        } else {
+            Hooks.on("preCreateChatMessage", targetReacts._preCreateChatMessage);
+            Hooks.on("createChatMessage", targetReacts._postCreateChatMessage);
+        }
     }
 
     static _renderItemSheet(app, html, data) {
@@ -53,13 +59,14 @@ export class targetReacts {
                     button: true,
                     visible: true,
                     onClick: async () => {
-                        let selectedToken = canvas.tokens.controlled[0];
-                        if (TokenMagic.hasFilterId(selectedToken, "trWoundSplash")) {
-                            await TokenMagic.deleteFiltersOnSelected("trWoundSplash");
+                        for await (const selectedToken of canvas.tokens.controlled) {
+                            if (TokenMagic.hasFilterId(selectedToken, "trWoundSplash")) {
+                                await TokenMagic.deleteFiltersOnSelected("trWoundSplash");
 
-                        }
-                        if (TokenMagic.hasFilterId(selectedToken, "trDeadSplash")) {
-                            await TokenMagic.deleteFiltersOnSelected("trDeadSplash");
+                            }
+                            if (TokenMagic.hasFilterId(selectedToken, "trDeadSplash")) {
+                                await TokenMagic.deleteFiltersOnSelected("trDeadSplash");
+                            }
                         }
                     },
                 }
@@ -76,12 +83,6 @@ export class targetReacts {
         html.closest('.app').find('.tr-actor-settings').remove();
         let titleElement = html.closest('.app').find('.window-title');
         trBtn.insertAfter(titleElement);
-    }
-
-    static async getJSON(path) {
-        const response = await fetch(path);
-        const json = await response.json();
-        return json;
     }
 
     static async _midiDamageRollComplete(data) {
@@ -147,9 +148,55 @@ export class targetReacts {
             targetReactionSettings.actorSettings = actorTROptions;
             targetReactionSettings.actorReactionEnabled = actorTREnabled;
             let reaction = new TargetReaction(targetReactionSettings);
-            await reaction.react();
+            reaction.react();
         }
         console.log("----------------------------------------------------------------");
+    }
+
+    static async _preCreateChatMessage(msg) {
+        console.log('Pre Chat Message: ', msg);
+        const tokenId = msg.data.speaker.token;
+        const caster = canvas.tokens.get(tokenId);
+        const casterActor = caster?.actor;
+        const item = casterActor?.items?.getName(msg.data.flavor);
+        //if (!caster || !item) return;
+
+        const chatContent = msg.data.content;
+        const targets = Array.from(game.user.targets);
+
+        let data = {
+            actor: casterActor,
+            token: caster,
+            tokenId: tokenId,
+            item: item,
+            targets: targets,
+            itemCardId: msg.id,
+            chatContent: chatContent
+        }
+        console.log("Pre-Create Chat Message Data: ", data);
+    }
+
+    static async _postCreateChatMessage(msg) {
+        console.log('Post Chat Message: ', msg);
+        const tokenId = msg.data.speaker.token;
+        const caster = canvas.tokens.get(tokenId);
+        const casterActor = caster?.actor;
+        const item = casterActor?.items?.getName(msg.data.flavor);
+        //if (!caster || !item) return;
+
+        const chatContent = msg.data.content;
+        const targets = Array.from(game.user.targets);
+
+        let data = {
+            actor: casterActor,
+            token: caster,
+            tokenId: tokenId,
+            item: item,
+            targets: targets,
+            itemCardId: msg.id,
+            chatContent: chatContent
+        }
+        console.log("Post-Create Chat Message Data: ", data);
     }
 }
 

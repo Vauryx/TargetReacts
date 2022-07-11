@@ -1,8 +1,10 @@
 import * as utilFunctions from "./utilityFunctions.js";
+import { trSocket } from "./trSockets.js";
 export class TargetReaction {
     constructor(options) {
         //console.log("Target Reaction: ", options);
         this.damageData = options.damageData;
+        this.targetId = options.damageData.tokenId;
         this.target = canvas.tokens.get(options.damageData.tokenId);
         this.caster = canvas.tokens.get(options.casterId);
 
@@ -132,13 +134,16 @@ export class TargetReaction {
             await utilFunctions.wait(this.alive ? this.itemSettings.hurt?.reactDelay : this.itemSettings.dead?.reactDelay ?? 0);
         }
         if (this.alive) {
-            console.log("Adding TMFX filters: ", this.target, this.reactionEffect);
-            await TokenMagic.addFilters(this.target, this.reactionEffect);
+            console.log("Adding TMFX filters: ", this.targetId, this.reactionEffect);
+            //await TokenMagic.addFilters(this.target, this.reactionEffect);
+            await trSocket.executeAsGM("tmfxAddFilters", this.targetId, this.reactionEffect);
         } else if (!this.alive) {
             if (this.actorSettings.deadSettings.blood) {
-                await this.target.TMFXdeleteFilters("trWoundSplash");
+                //await this.target.TMFXdeleteFilters("trWoundSplash");
+                await trSocket.executeAsGM("tmfxDeleteFiltersByName", this.targetId, "trWoundSplash");
             }
-            await TokenMagic.addFilters(this.target, this.reactionEffect);
+            //await TokenMagic.addFilters(this.target, this.reactionEffect);
+            await trSocket.executeAsGM("tmfxAddFilters", this.targetId, this.reactionEffect);
         }
         await this.reactionSequence.play();
     }
