@@ -6,7 +6,6 @@ const SUB_MODULES = {
 
 Hooks.on(`setup`, () => {
     Object.values(SUB_MODULES).forEach(cl => cl.register());
-
     setupTRSocket();
     
   });

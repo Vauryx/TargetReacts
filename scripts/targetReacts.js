@@ -22,7 +22,14 @@ export class targetReacts {
             type: Boolean,
             default: true
         });
-
+        game.settings.registerMenu("targetreacts", "defaultItemSettings", {
+            name: "Default Item Reaction Settings",
+            label: "Default Reaction Settings (Item)",
+            hint: "These settings will be used if the item does not have a custom reaction setting.",
+            icon: "fas fa-eye",
+            type: TRItemSettings,
+            restricted: true
+        });
     }
 
     static registerHooks() {

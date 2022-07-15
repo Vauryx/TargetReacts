@@ -1,7 +1,7 @@
 //import * as utilFunctions from "../utilityFunctions.js";
 // Importing spells
 
-export class TRItemSettings extends FormApplication {
+export class TRDefaultItemSettings extends FormApplication {
     constructor() {
         super(...arguments);
         //console.log(this);
@@ -118,7 +118,7 @@ export class TRItemSettings extends FormApplication {
         return this.object.update(formData);
     }
 }
-export default TRItemSettings;
+export default TRDefaultItemSettings;
 
 Handlebars.registerHelper('ifCondTR', function (v1, operator, v2, options) {
     switch (operator) {
